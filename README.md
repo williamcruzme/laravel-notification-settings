@@ -4,6 +4,7 @@
 <p align="center">
   <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/5.5.x/red" alt="Laravel"></a>
   <a href="https://laravel.com/"><img src="https://badgen.net/badge/Laravel/6.x/red" alt="Laravel"></a>
+  <a href="https://github.com/williamcruzme/laravel-notification-settings"><img src="https://img.shields.io/github/license/williamcruzme/laravel-notification-settings" alt="GitHub"></a>
 </p>
 
 <br>
