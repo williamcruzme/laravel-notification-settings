@@ -36,8 +36,8 @@ trait ManageNotificationSettings
     {
         $request->validate($this->rules(), $this->validationErrorMessages());
 
-        $this->guard()->user()->notificationSettings()->syncWithoutDetaching([
-            $notificationType->id => $request->boolean('status'),
+        $this->guard()->user()->notificationSettings()->syncWithoutDetaching($notificationType, [
+            'status' => $request->boolean('status'),
         ]);
 
         return response()->json([
