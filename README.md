@@ -35,7 +35,7 @@ In your user model add the `Notifiable` trait. This trait supports custom guards
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use williamcruzme\NotificationSettings\Traits\Notifiable;
+use Millions\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -103,7 +103,7 @@ $user->notify(new InvoicePaid($invoice));
 Alternatively, you may send notifications via the `Notification` facade. This is useful primarily when you need to send a notification to multiple notifiable entities such as a collection of users. To send notifications using the facade, pass all of the notifiable entities and the notification instance to the `send` method:
 
 ```php
-use williamcruzme\NotificationSettings\Facades\Notification;
+use Millions\Notifications\Facades\Notification;
 
 Notification::send($users, new InvoicePaid($invoice));
 ```
@@ -120,7 +120,7 @@ Notification::send($users, new InvoicePaid($invoice));
 
 | Method |             URI             |
 | ------ | --------------------------- |
-| PATCH  | `/notifications/markAsRead` |
+| PATCH  | `/notifications/read` |
 
 ### Delete notification
 
@@ -150,12 +150,12 @@ Notification::send($users, new InvoicePaid($invoice));
 
 ## 🎨 Customizing
 
-First of all, create your own `NotificationController` `NotificationSettingController` controllers and add the `ManageNotifications` `ManageNotificationSettings` traits.
+First of all, create your own `NotificationSettingController` controllers and add the `ManageNotificationSettings` trait.
 
 Second, modify the namespace of the `Notification` facade routes:
 
 ```php
-Notification::routes('App\Http\Controllers');
+Notification::routesForSettings('App\Http\Controllers');
 ```
 
 ### Custom request validations
@@ -167,7 +167,7 @@ The `rules` `validationErrorMessages` methods in the `NotificationSettingControl
 
 namespace App\Http\Controllers;
 
-use williamcruzme\NotificationSettings\Traits\ManageNotificationSettings;
+use Millions\Notifications\ManageNotificationSettings;
 
 class NotificationSettingController extends Controller {
 
@@ -199,18 +199,18 @@ class NotificationSettingController extends Controller {
 
 ### Custom response
 
-The `sendResponse` method in the `NotificationController` `NotificationSettingController` allows you override the default response:
+The `sendResponse` method in the `NotificationSettingController` allows you override the default response:
 
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
-use williamcruzme\NotificationSettings\Traits\ManageNotifications;
+use Millions\Notifications\ManageNotificationSettings;
 
-class NotificationController extends Controller {
+class NotificationSettingController extends Controller {
 
-    use ManageNotifications;
+    use ManageNotificationSettings;
     
     /**
      * Get the response for a successful listing notification settings.
@@ -227,18 +227,18 @@ class NotificationController extends Controller {
 
 ### Custom guards
 
-The `guard` method in the `NotificationController` `NotificationSettingController` allows you override the default guard:
+The `guard` method in the `NotificationSettingController` allows you override the default guard:
 
 ```php
 <?php
 
 namespace App\Http\Controllers;
 
-use williamcruzme\NotificationSettings\Traits\ManageNotifications;
+use Millions\Notifications\ManageNotificationSettings;
 
-class NotificationController extends Controller {
+class NotificationSettingController extends Controller {
 
-    use ManageNotifications;
+    use ManageNotificationSettings;
     
     /**
      * Get the guard to be used during notifications management.

@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\NotificationSettings\Helpers;
+namespace Millions\Notifications\Helpers;
 
 use Illuminate\Notifications\ChannelManager;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\NotificationSettings\Traits;
+namespace Millions\Notifications;
 
-use williamcruzme\NotificationSettings\NotificationType;
 use Illuminate\Notifications\Notifiable as BaseNotifiable;
+use Millions\Notifications\NotificationType;
 
 trait Notifiable
 {
@@ -45,7 +45,7 @@ trait Notifiable
 
     public function canReceive($notification)
     {
-        $setting = $this->notification_settings()->whereName($notification)->first();
+        $setting = $this->notificationSettings()->whereName($notification)->first();
 
         // Ensure that user wants recieve the notification
         return !$setting || ($setting && $setting->status && $setting->pivot->status);
@@ -56,7 +56,7 @@ trait Notifiable
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function notification_settings()
+    public function notificationSettings()
     {
         return $this
             ->morphToMany(NotificationType::class, 'user', 'notification_settings')

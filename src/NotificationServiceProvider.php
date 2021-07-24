@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\NotificationSettings;
+namespace Millions\Notifications;
 
 use Illuminate\Support\ServiceProvider;
-use williamcruzme\NotificationSettings\Helpers\Notification;
+use Millions\Notifications\Helpers\Notification;
 
 class NotificationServiceProvider extends ServiceProvider
 {
@@ -41,7 +41,7 @@ class NotificationServiceProvider extends ServiceProvider
     protected function bootForConsole()
     {
         $this->publishes([
-            __DIR__.'/database/migrations' => database_path('migrations')
+            __DIR__ . '/../database/migrations' => database_path('migrations')
         ], 'migrations');
     }
 }

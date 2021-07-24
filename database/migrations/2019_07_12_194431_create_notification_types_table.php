@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateNotificationTypesTable extends Migration
 {
@@ -15,8 +15,9 @@ class CreateNotificationTypesTable extends Migration
     {
         Schema::create('notification_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('display_text');
+            $table->json('schedule')->nullabe();
             $table->boolean('status')->default(true);
         });
     }

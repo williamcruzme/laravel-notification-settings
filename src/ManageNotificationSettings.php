@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\NotificationSettings\Traits;
+namespace Millions\Notifications;
 
 use Illuminate\Http\Request;
-use williamcruzme\NotificationSettings\NotificationType;
+use Millions\Notifications\NotificationType;
 
 trait ManageNotificationSettings
 {
@@ -14,8 +14,8 @@ trait ManageNotificationSettings
      */
     public function index()
     {
-        $types = NotificationType::get();
-        $settings = $this->guard()->user()->notification_settings;
+        $types = NotificationType::all();
+        $settings = $this->guard()->user()->notificationSettings;
 
         $types->each(function ($type) use ($settings) {
             $setting = $settings->find($type->id);
@@ -29,15 +29,15 @@ trait ManageNotificationSettings
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \williamcruzme\FCM\NotificationType  $notificationType
+     * @param  \Millions\Notifications\NotificationType  $notificationType
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, NotificationType $notificationType)
     {
         $request->validate($this->rules(), $this->validationErrorMessages());
 
-        $this->guard()->user()->notification_settings()->syncWithoutDetaching([
-            $notificationType->id => $request->only('status'),
+        $this->guard()->user()->notificationSettings()->syncWithoutDetaching([
+            $notificationType->id => $request->boolean('status'),
         ]);
 
         return response()->json([

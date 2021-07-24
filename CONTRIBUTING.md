@@ -19,12 +19,11 @@ composer install
 
 As you can see we have:
 
+- `database`: contains the migrations, seeders or factories.
 - `src` contains the working code for the repository:
-  - `database`: contains the migrations, seeders or factories.
   - `Facades`: contains the package facades.
   - `Helpers`: contains the package helpers.
   - `Http`: contains the http utilities like controllers, requests, etc.
-  - `Traits`: contains the traits to import in the models.
 
 ### Issues
 

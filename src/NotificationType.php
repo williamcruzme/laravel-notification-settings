@@ -1,6 +1,6 @@
 <?php
 
-namespace williamcruzme\NotificationSettings;
+namespace Millions\Notifications;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,7 +19,10 @@ class NotificationType extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'display_text', 'status',
+        'name',
+        'display_text',
+        'schedule',
+        'status',
     ];
 
     /**
@@ -28,6 +31,7 @@ class NotificationType extends Model
      * @var array
      */
     protected $casts = [
+        'schedule' => 'array',
         'status' => 'boolean',
     ];
 }

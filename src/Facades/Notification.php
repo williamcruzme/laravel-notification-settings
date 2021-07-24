@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\NotificationSettings\Facades;
+namespace Millions\Notifications\Facades;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Route;
 
 class Notification extends Facade
 {
@@ -22,21 +22,15 @@ class Notification extends Facade
      *
      * @return void
      */
-    public static function routes($namespace = '\\williamcruzme\\NotificationSettings\\Http\\Controllers')
+    public static function routesForSettings($namespace = '\\Millions\\Notifications\\Http\\Controllers')
     {
-        Route::namespace($namespace)->group(function () {
-            // Notifications
-            Route::prefix('notifications')->group(function () {
-                Route::get('/', 'NotificationController@index');
-                Route::patch('/markAsRead', 'NotificationController@markAsRead');
-                Route::delete('/', 'NotificationController@destroy');
-            });
+        if (! str_starts_with('\\', $namespace)) {
+            $namespace = "\\$namespace";
+        }
 
-            // Notification Settings
-            Route::prefix('settings/notifications')->group(function () {
-                Route::get('/', 'NotificationSettingController@index');
-                Route::patch('/{notificationType}', 'NotificationSettingController@update');
-            });
+        Route::prefix('settings/notifications')->namespace($namespace)->group(function () {
+            Route::get('/', 'NotificationSettingController@index');
+            Route::patch('{notificationType}', 'NotificationSettingController@update');
         });
     }
 }

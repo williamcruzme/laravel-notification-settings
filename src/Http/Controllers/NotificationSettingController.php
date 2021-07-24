@@ -1,9 +1,9 @@
 <?php
 
-namespace williamcruzme\NotificationSettings\Http\Controllers;
+namespace Millions\Notifications\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use williamcruzme\NotificationSettings\Traits\ManageNotificationSettings;
+use Millions\Notifications\ManageNotificationSettings;
 
 class NotificationSettingController extends Controller
 {

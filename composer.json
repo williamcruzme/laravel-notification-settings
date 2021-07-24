@@ -25,16 +25,16 @@
   "extra": {
     "laravel": {
       "providers": [
-        "williamcruzme\\NotificationSettings\\NotificationServiceProvider"
+        "Millions\\Notifications\\NotificationServiceProvider"
       ],
       "aliases": {
-        "Notification": "williamcruzme\\NotificationSettings\\Facades\\Notification"
+        "Notification": "Millions\\Notifications\\Facades\\Notification"
       }
     }
   },
   "autoload": {
     "psr-4": {
-      "williamcruzme\\NotificationSettings\\": "src/"
+      "Millions\\Notifications\\": "src/"
     }
   }
 }
