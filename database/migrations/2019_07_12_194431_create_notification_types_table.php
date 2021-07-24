@@ -16,7 +16,7 @@ class CreateNotificationTypesTable extends Migration
         Schema::create('notification_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique();
-            $table->string('display_text');
+            $table->string('display_text')->nullable();
             $table->json('schedule')->nullabe();
             $table->boolean('status')->default(true);
         });

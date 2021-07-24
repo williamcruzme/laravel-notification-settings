@@ -14,7 +14,7 @@ trait ManageNotificationSettings
      */
     public function index()
     {
-        $types = NotificationType::all();
+        $types = NotificationType::whereNotNull('display_text')->get();
         $settings = $this->guard()->user()->notificationSettings;
 
         $types->each(function ($type) use ($settings) {
