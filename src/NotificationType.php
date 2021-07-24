@@ -34,4 +34,13 @@ class NotificationType extends Model
         'schedule' => 'array',
         'status' => 'boolean',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'schedule',
+    ];
 }
