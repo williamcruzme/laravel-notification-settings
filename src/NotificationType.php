@@ -43,4 +43,37 @@ class NotificationType extends Model
     protected $hidden = [
         'schedule',
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot() {
+        parent::boot();
+
+        $callback = function () {
+            cache()->forget('notifications:types');
+        };
+
+        static::saved($callback);
+        static::deleted($callback);
+    }
+
+    /**
+     * Check if the notification type is enabled.
+     *
+     * @param  string  $notificationType
+     * @return bool
+     */
+    public static function isEnabled($notificationType)
+    {
+        $settings = cache()->rememberForever('notifications:types', function () {
+            return NotificationType::all();
+        });
+
+        $setting = $settings->where('name', $notificationType)->first();
+
+        return ! $setting || $setting->status;
+    }
 }

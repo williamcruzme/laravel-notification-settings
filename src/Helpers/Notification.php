@@ -3,6 +3,7 @@
 namespace Millions\Notifications\Helpers;
 
 use Illuminate\Notifications\ChannelManager;
+use Millions\Notifications\NotificationType;
 
 class Notification extends ChannelManager
 {
@@ -15,11 +16,13 @@ class Notification extends ChannelManager
      */
     public function send($notifiables, $notification)
     {
-        $notificationName = get_class($notification);
+        $notificationType = get_class($notification);
 
-        $notifiables = collect($notifiables)->filter(function ($notifiable) use ($notificationName) {
-            return $notifiable->canReceive($notificationName);
-        });
+        if (! NotificationType::isEnabled($notificationType)) {
+            return;
+        }
+
+        $notifiables = $this->notifiables($notifiables, $notificationType);
 
         return parent::send($notifiables, $notification);
     }
@@ -34,12 +37,30 @@ class Notification extends ChannelManager
      */
     public function sendNow($notifiables, $notification, array $channels = null)
     {
-        $notificationName = get_class($notification);
+        $notificationType = get_class($notification);
 
-        $notifiables = collect($notifiables)->filter(function ($notifiable) use ($notificationName) {
-            return $notifiable->canReceive($notificationName);
+        if (! NotificationType::isEnabled($notificationType)) {
+            return;
+        }
+
+        $notifiables = $this->notifiables($notifiables, $notificationType);
+
+        return parent::sendNow($notifiables, $notification, $channels);
+    }
+
+    /**
+     * Get all the notifiables for a notification type.
+     *
+     * @param  \Illuminate\Support\Collection|array|mixed  $notifiables
+     * @param  string  $notificationType
+     * @return bool
+     */
+    public static function notifiables($notifiables, $notificationType)
+    {
+        $notifiables->load('notificationSettings');
+
+        return $notifiables->filter(function ($notifiable) use ($notificationType) {
+            return $notifiable->canReceive($notificationType);
         });
-
-        return parent::send($notifiables, $notification, $channels);
     }
 }

@@ -13,6 +13,18 @@ trait Notifiable
     }
 
     /**
+     * Get the notification settings of the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function notificationSettings()
+    {
+        return $this
+            ->morphToMany(NotificationType::class, 'user', 'notification_settings')
+            ->withPivot('status');
+    }
+
+    /**
      * Send the given notification.
      *
      * @param  mixed  $instance
@@ -20,9 +32,9 @@ trait Notifiable
      */
     public function notify($instance)
     {
-        $notificationName = get_class($instance);
+        $notificationType = get_class($instance);
 
-        if ($this->canReceive($notificationName)) {
+        if (NotificationType::isEnabled($notificationType) && $this->canReceive($notificationType)) {
             $this->_notify($instance);
         }
     }
@@ -36,30 +48,23 @@ trait Notifiable
      */
     public function notifyNow($instance, array $channels = null)
     {
-        $notificationName = get_class($instance);
+        $notificationType = get_class($instance);
 
-        if ($this->canReceive($notificationName)) {
+        if (NotificationType::isEnabled($notificationType) && $this->canReceive($notificationType)) {
             $this->_notifyNow($instance, $channels);
         }
     }
 
-    public function canReceive($notification)
-    {
-        $setting = $this->notificationSettings()->whereName($notification)->first();
-
-        // Ensure that user wants recieve the notification
-        return !$setting || ($setting && $setting->status && $setting->pivot->status);
-    }
-
     /**
-     * Get the notification settings of the model.
+     * Check if user wants recieve the notification.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @param  string  $notificationType
+     * @return bool
      */
-    public function notificationSettings()
+    public function canReceive($notificationType)
     {
-        return $this
-            ->morphToMany(NotificationType::class, 'user', 'notification_settings')
-            ->withPivot('status');
+        $setting = $this->notificationSettings->where('name', $notificationType)->first();
+
+        return ! $setting || $setting->status;
     }
 }

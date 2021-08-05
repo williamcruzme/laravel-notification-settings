@@ -20,6 +20,7 @@ class Notification extends Facade
     /**
      * Register the typical notifications routes for an application.
      *
+     * @param  string  $namespace
      * @return void
      */
     public static function routesForSettings($namespace = '\\Millions\\Notifications\\Http\\Controllers')
