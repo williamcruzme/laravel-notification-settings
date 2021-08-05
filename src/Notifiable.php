@@ -65,6 +65,6 @@ trait Notifiable
     {
         $setting = $this->notificationSettings->where('name', $notificationType)->first();
 
-        return ! $setting || $setting->status;
+        return ! $setting || $setting->pivot->status;
     }
 }
