@@ -8,10 +8,9 @@ trait Schedulable
 {
     public function viaQueues()
     {
-        $notificationName = get_class($this);
-
-        $settings = cache()->rememberForever("notifications:$notificationName", function () use ($notificationName) {
-            return NotificationType::whereName($notificationName)->first();
+        $notificationType = get_class($this);
+        $settings = cache()->rememberForever("notifications:$notificationType", function () use ($notificationType) {
+            return NotificationType::whereName($notificationType)->first();
         });
 
         $range = optional($settings)->schedule;

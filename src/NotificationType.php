@@ -52,8 +52,8 @@ class NotificationType extends Model
     public static function boot() {
         parent::boot();
 
-        $callback = function () {
-            cache()->forget('notifications:types');
+        $callback = function ($notificationType) {
+            cache()->forget("notifications:$notificationType->name");
         };
 
         static::saved($callback);
@@ -68,12 +68,10 @@ class NotificationType extends Model
      */
     public static function isEnabled($notificationType)
     {
-        $settings = cache()->rememberForever('notifications:types', function () {
-            return NotificationType::all();
+        $settings = cache()->rememberForever("notifications:$notificationType", function () use ($notificationType) {
+            return NotificationType::whereName($notificationType)->first();
         });
 
-        $setting = $settings->where('name', $notificationType)->first();
-
-        return ! $setting || $setting->status;
+        return ! $settings || $settings->status;
     }
 }
