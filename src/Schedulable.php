@@ -22,11 +22,17 @@ trait Schedulable
         $currentTime = now('America/New_York');
         $currentHour = $currentTime->hour;
 
+        // Send immediately if the current hour is in the range
         if ($currentHour >= (int) $range[0] && $currentHour < (int) $range[1]) {
             $this->delay = $currentTime;
         } else {
             // Send to the next business hour
-            $this->delay = today('America/New_York')->addDay()->addHours((int) $range[0]);
+            $this->delay = today('America/New_York')->addHour((int) $range[0]);
+
+            // Send to the next day if we're past the end of the range
+            if ($currentHour >= (int) $range[1]) {
+                $this->delay->addDay();
+            };
         }
 
         return null;
