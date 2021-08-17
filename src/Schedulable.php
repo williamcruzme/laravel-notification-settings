@@ -8,6 +8,10 @@ trait Schedulable
 {
     public function viaQueues()
     {
+        if (! $this->shouldSchedule()) {
+            return null;
+        }
+
         $notificationType = get_class($this);
         $settings = cache()->rememberForever("notifications:$notificationType", function () use ($notificationType) {
             return NotificationType::whereName($notificationType)->first();
@@ -36,5 +40,10 @@ trait Schedulable
         }
 
         return null;
+    }
+
+    public function shouldSchedule()
+    {
+        return true;
     }
 }
