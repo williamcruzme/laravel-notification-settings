@@ -3,6 +3,7 @@
 namespace Millions\Notifications;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationType extends Model
 {
@@ -58,6 +59,14 @@ class NotificationType extends Model
 
         static::saved($callback);
         static::deleted($callback);
+    }
+
+    /**
+     * Get the notifications for the notification type.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(DatabaseNotification::class, 'type', 'name');
     }
 
     /**
