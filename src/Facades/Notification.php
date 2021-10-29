@@ -4,6 +4,7 @@ namespace Millions\Notifications\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Route;
+use Millions\Notifications\ChannelManager;
 
 class Notification extends Facade
 {
@@ -14,7 +15,7 @@ class Notification extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'notification';
+        return ChannelManager::class;
     }
 
     /**

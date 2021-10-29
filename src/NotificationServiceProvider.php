@@ -3,7 +3,6 @@
 namespace Millions\Notifications;
 
 use Illuminate\Support\ServiceProvider;
-use Millions\Notifications\Helpers\Notification;
 
 class NotificationServiceProvider extends ServiceProvider
 {
@@ -14,8 +13,8 @@ class NotificationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('notification', function () {
-            return new Notification($this->app);
+        $this->app->singleton(ChannelManager::class, function ($app) {
+            return new ChannelManager($app);
         });
     }
 

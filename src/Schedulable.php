@@ -23,15 +23,15 @@ trait Schedulable
             return null;
         }
 
-        $currentTime = now('America/New_York');
-        $currentHour = $currentTime->hour;
+        $timezone = $this->timezone ?? config('app.timezone');
+        $currentHour = now($timezone)->hour;
 
         // Send immediately if the current hour is in the range
         if ($currentHour >= (int) $range[0] && $currentHour < (int) $range[1]) {
-            $this->delay = $currentTime;
+            $this->delay = null;
         } else {
             // Send to the next business hour
-            $this->delay = today('America/New_York')->addHour((int) $range[0]);
+            $this->delay = today($timezone)->addHour((int) $range[0]);
 
             // Send to the next day if we're past the end of the range
             if ($currentHour >= (int) $range[1]) {

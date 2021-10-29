@@ -32,8 +32,11 @@ trait Notifiable
      */
     public function notify($instance)
     {
-        $notificationType = get_class($instance);
+        // Set timezone
+        $instance->timezone = $this->timezone;
 
+        // Check if the notification is enabled
+        $notificationType = get_class($instance);
         if (NotificationType::isEnabled($notificationType) && $this->canReceive($notificationType)) {
             $this->_notify($instance);
         }
@@ -48,8 +51,11 @@ trait Notifiable
      */
     public function notifyNow($instance, array $channels = null)
     {
-        $notificationType = get_class($instance);
+        // Set timezone
+        $instance->timezone = $this->timezone;
 
+        // Check if the notification is enabled
+        $notificationType = get_class($instance);
         if (NotificationType::isEnabled($notificationType) && $this->canReceive($notificationType)) {
             $this->_notifyNow($instance, $channels);
         }

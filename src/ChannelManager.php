@@ -1,11 +1,12 @@
 <?php
 
-namespace Millions\Notifications\Helpers;
+namespace Millions\Notifications;
 
-use Illuminate\Notifications\ChannelManager;
-use Millions\Notifications\NotificationType;
+use Illuminate\Contracts\Bus\Dispatcher as Bus;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Notifications\ChannelManager as BaseChannelManager;
 
-class Notification extends ChannelManager
+class ChannelManager extends BaseChannelManager
 {
     /**
      * Send the given notification to the given notifiable entities.
@@ -24,7 +25,9 @@ class Notification extends ChannelManager
 
         $notifiables = $this->notifiables($notifiables, $notificationType);
 
-        return parent::send($notifiables, $notification);
+        (new NotificationSender(
+            $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
+        )->send($notifiables, $notification);
     }
 
     /**
@@ -45,7 +48,9 @@ class Notification extends ChannelManager
 
         $notifiables = $this->notifiables($notifiables, $notificationType);
 
-        return parent::sendNow($notifiables, $notification, $channels);
+        (new NotificationSender(
+            $this, $this->container->make(Bus::class), $this->container->make(Dispatcher::class), $this->locale)
+        )->sendNow($notifiables, $notification, $channels);
     }
 
     /**
