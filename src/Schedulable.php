@@ -13,7 +13,7 @@ trait Schedulable
         }
 
         $notificationType = get_class($this);
-        $settings = cache()->rememberForever("notifications:$notificationType", function () use ($notificationType) {
+        $settings = cache()->tags('notification_settings')->rememberForever("notifications:$notificationType", function () use ($notificationType) {
             return NotificationType::whereName($notificationType)->first();
         });
 
