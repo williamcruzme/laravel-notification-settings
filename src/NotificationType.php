@@ -77,7 +77,7 @@ class NotificationType extends Model
      */
     public static function isEnabled($notificationType)
     {
-        $settings = cache()->tags('notification_settings')->tarememberForever("notifications:$notificationType", function () use ($notificationType) {
+        $settings = cache()->tags('notification_settings')->rememberForever("notifications:$notificationType", function () use ($notificationType) {
             return NotificationType::whereName($notificationType)->first();
         });
 
